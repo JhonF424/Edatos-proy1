@@ -1,10 +1,11 @@
-import cueva
+from classes.cueva import *
 
 
 class minas:
     def __init__(self):
         self.raiz = None
         self.bodega = []
+        self.cuenta = 0
 
     def getRaiz(self):
         return self.raiz
@@ -12,9 +13,32 @@ class minas:
     def getBodega(self):
         return self.bodega
 
-    def crearCueva():
-        pass  # <-- TO DO: Crear el método para crear una nueva cueva, teniendo como condición
-        # <--        que deben existir 100 materiales del mismo tipo
+    def getCuenta(self):
+        return self.cuenta
+
+    def ingresar(self, cueva):
+        if self.raiz == None:
+            self.raiz = cueva
+        else:
+            self.crearCueva(self.raiz, cueva)
+
+    def crearCueva(self, padre, cueva):
+
+        if not padre:
+            return True
+
+        if cueva.getId() < padre.getId():
+            if self.crearCueva(padre.getIzq(), cueva):
+                padre.setIzq(cueva)
+                return False
+
+        if cueva.getId() > padre.getId():
+
+            if self.crearCueva(padre.getDer(), cueva):
+                padre.setDer(cueva)
+                return False
+
+        return False
 
     def eliminarCueva():
         pass  # <-- TO DO: Crear el método para eliminar una cueva, teniendo como condición
@@ -31,7 +55,14 @@ class minas:
         self.extraerMaterial(padre.getDer())
 
     def comprobarBodega(self):
-        print(self.getBodega())  # <-- Con este método vamos a revisar si la bodega tiene
         #     la cantidad específica de cada material
+        if self.cuenta % 2 == 0:
+            self.crearCueva()
 
-    
+    def inOrder(self, padre):
+        if padre == None:
+            return
+
+        self.inOrder(padre.getIzq())
+        self.bodega.append(padre.getId())
+        self.inOrder(padre.getDer())

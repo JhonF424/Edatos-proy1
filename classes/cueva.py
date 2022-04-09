@@ -1,34 +1,43 @@
-class cueva():
-    def __init__(self, tipo, cantidad, id):
-       self.tipo = tipo,
-       self.cantidad = cantidad,
-       self.id = id
-       
-       
+import random
+from threading import Thread
+from time import time
+
+
+class cueva:
+    def __init__(self):
+        tipos = ["Madera", "Diamante", "Piedra", "Oro", "Plata", "Bronce"]
+        tipoA = random.choice(tipos)
+        self.tipo = tipoA  # <-- Se genera un mina de cualquiera de los tipos de la lista
+        cant = random.randint(100, 300)  # <--
+        self.cantidad = cant
+        # Usamos la función random para generar datos aleatorios
+        # Se deben crear dos variables, ya que la función retorna una tupla
+        idI = random.randint(0, 999)  # <--
+        self.id = idI
+        self.izq = None
+        self.der = None
+
+    def getIzq(self):
+        return self.izq
+
+    def getDer(self):
+        return self.der
+
+    def setIzq(self, izq):
+        self.izq = izq
+
+    def setDer(self, der):
+        self.der = der
+
     def getTipo(self):
         return self.tipo
-    
-    def setTipo(self, tipo):
-        self.tipo = tipo
-        
+
     def getCant(self):
         return self.cantidad
-    
-    def setCant(self, cant):
-        self.cantidad = cant
-        
-    def getId(self):  # <-- Necesitamos un ID por cada cueva, para poder asignar un camión
-                      #     que se dirija a buscar esa cueva, siendo una ruta específica
+
+    def getId(self):
         return self.id
-    
-    def setId(self, id):
-        self.id = id
-        
-        
+
     def generarMineral(self):
-        # Pendiente: Establecer el tiempo
-        # cada 10 segundos...
-        
+        time.sleep(10)
         self.cantidad += 2
-        
-         
