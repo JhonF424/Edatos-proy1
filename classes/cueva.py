@@ -35,6 +35,9 @@ class cueva:
     def getCant(self):
         return self.cantidad
 
+    def setCant(self, nCant):
+        self.cantidad = nCant    
+    
     def getId(self):
         return self.id
 
