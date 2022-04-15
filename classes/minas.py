@@ -1,3 +1,6 @@
+import json
+import random
+from time import sleep
 from classes.cueva import *
 
 
@@ -18,12 +21,17 @@ class minas:
         return self.raiz
 
     def getBodega(self):
-        return self.bodega.items()
+        return json.dumps(self.bodega, sort_keys=False, indent=4)
 
     def getListaMinas(self):
         return self.listaMinas
 
     def ingresar(self, cueva):
+
+        self.listarCuevas(cueva)
+
+        if cueva.getId() not in self.listaMinas:
+            pass
         if self.raiz == None:
             self.raiz = cueva
         else:
@@ -37,21 +45,28 @@ class minas:
         if cueva.getId() < padre.getId():
             if self.crearCueva(padre.getIzq(), cueva):
                 padre.setIzq(cueva)
-                self.listaMinas.append(padre.getId())
                 return False
 
         if cueva.getId() > padre.getId():
 
             if self.crearCueva(padre.getDer(), cueva):
                 padre.setDer(cueva)
-                self.listaMinas.append(padre.getId())
                 return False
 
         return False
 
-    def eliminarCueva():
+    def eliminarCueva(self, padre):
         pass  # <-- TO DO: Crear el método para eliminar una cueva, teniendo como condición
         #            que debe tener 10 de materiales para poder cerrarse
+
+    def listarCuevas(self, padre):
+        if not padre:
+            return
+        if padre.getId() not in self.listaMinas:
+            self.listaMinas.append(padre.getId())
+
+        self.listarCuevas(padre.getIzq())
+        self.listarCuevas(padre.getDer())
 
     def elegirRuta(self):
         return random.choice(self.listaMinas)
@@ -71,25 +86,85 @@ class minas:
             )
 
             if padre.getTipo() == "Madera":
-                self.bodega["cMadera"] += padre.getCant()
+                if padre.getCant == 0:
+                    self.listaMinas.remove(padre.getId())
+                    self.eliminarCueva(padre.getId())
+
+                ext = self.extraerMineral(padre.getCant())
+                print("se extraen: ", ext)
+                act = padre.getCant()
+                self.bodega["cMadera"] += ext
+                nC = act - ext
+                padre.setCant(nC)
+
             elif padre.getTipo() == "Diamante":
-                self.bodega["cDiamante"] += padre.getCant()
+                if padre.getCant == 0:
+                    self.listaMinas.remove(padre.getId())
+                    self.eliminarCueva(padre.getId())
+
+                ext = self.extraerMineral(padre.getCant())
+                print("se extraen: ", ext)
+                act = padre.getCant()
+                self.bodega["cDiamante"] += ext
+                nC = act - ext
+                padre.setCant(nC)
+
             elif padre.getTipo() == "Piedra":
-                self.bodega["cPiedra"] += padre.getCant()
+                if padre.getCant == 0:
+                    self.listaMinas.remove(padre.getId())
+                    self.eliminarCueva(padre.getId())
+
+                ext = self.extraerMineral(padre.getCant())
+                print("se extraen: ", ext)
+                act = padre.getCant()
+                self.bodega["cPiedra"] += ext
+                nC = act - ext
+                padre.setCant(nC)
+
             elif padre.getTipo() == "Oro":
-                self.bodega["cOro"] += padre.getCant()
+                if padre.getCant == 0:
+                    self.listaMinas.remove(padre.getId())
+                    self.eliminarCueva(padre.getId())
+
+                ext = self.extraerMineral(padre.getCant())
+                print("se extraen: ", ext)
+                act = padre.getCant()
+                self.bodega["cOro"] += ext
+                nC = act - ext
+                padre.setCant(nC)
+
             elif padre.getTipo() == "Plata":
-                self.bodega["cPlata"] += padre.getCant()
+                if padre.getCant == 0:
+                    self.listaMinas.remove(padre.getId())
+                    self.eliminarCueva(padre.getId())
+
+                ext = self.extraerMineral(padre.getCant())
+                print("se extraen: ", ext)
+                act = padre.getCant()
+                self.bodega["cPlata"] += ext
+                nC = act - ext
+                padre.setCant(nC)
+
             elif padre.getTipo() == "Bronce":
-                self.bodega["cBronce"] += padre.getCant()
-            print("Cargando camión...", padre.getCant())
+                if padre.getCant == 0:
+                    self.listaMinas.remove(padre.getId())
+                    self.eliminarCueva(padre.getId())
+
+                ext = self.extraerMineral(padre.getCant())
+                print("se extraen: ", ext)
+                act = padre.getCant()
+                self.bodega["cBronce"] += ext
+                nC = act - ext
+                padre.setCant(nC)
+
+            print("Bodega abastecida, estado actual: \n\n", self.getBodega())
 
         self.iniciarRuta(padre.getIzq(), ruta)
         self.iniciarRuta(padre.getDer(), ruta)
 
     def comprobarBodega(self):
         if self.bodega["cMadera"] >= 100:
-            self.ingresar(cueva())  # <-- Pendiente de probar
+            self.ingresar(cueva())
         elif self.bodega["cDiamante"] >= 100:
             self.ingresar(cueva())
         elif self.bodega["cPiedra"] >= 100:
@@ -101,27 +176,14 @@ class minas:
         elif self.bodega["cBronce"] >= 100:
             self.ingresar(cueva())
 
-    def inOrder(self, padre):
+    def extraerMineral(self, cant):
+        return 20 * cant / 100
+
+    def generarMaterial(self, padre):
         if padre == None:
             return
 
-        self.inOrder(padre.getIzq())
-        self.bodega.append(padre.getId())
-        print(padre.getId())
-        self.inOrder(padre.getDer())
-
-    def preOrder(self, padre):
-        if padre == None:
-            return
-
-        self.bodega.append(padre.getId())
-        self.preOrder(padre.getIzq())
-        self.preOrder(padre.getDer())
-
-    def posOrder(self, padre):
-        if padre == None:
-            return
-
-        self.posOrder(padre.getIzq())
-        self.posOrder(padre.getDer())
-        self.bodega.append(padre.getId())
+        act = padre.getCant() + 2
+        padre.setCant(act)
+        self.generarMaterial(padre.getIzq())
+        self.generarMaterial(padre.getDer())

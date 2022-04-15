@@ -1,7 +1,5 @@
 import random
-from threading import Thread
-from time import time
-
+from classes.minas import *
 
 class cueva:
     def __init__(self):
@@ -40,7 +38,3 @@ class cueva:
     
     def getId(self):
         return self.id
-
-    def generarMineral(self):
-        time.sleep(10)
-        self.cantidad += 2
