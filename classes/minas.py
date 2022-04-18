@@ -56,8 +56,11 @@ class minas:
         return False
 
     def eliminarCueva(self, padre):
-        pass  # <-- TO DO: Crear el método para eliminar una cueva, teniendo como condición
-        #            que debe tener 10 de materiales para poder cerrarse
+        if not padre:
+            return
+
+        if padre.getIzq() == None and padre.getDer() == None:
+            padre == None
 
     def listarCuevas(self, padre):
         if not padre:
@@ -86,9 +89,9 @@ class minas:
             )
 
             if padre.getTipo() == "Madera":
-                if padre.getCant == 0:
+                if padre.getCant() <= 10:
                     self.listaMinas.remove(padre.getId())
-                    self.eliminarCueva(padre.getId())
+                    self.eliminarCueva(padre)
 
                 ext = self.extraerMineral(padre.getCant())
                 print("se extraen: ", ext)
@@ -98,9 +101,9 @@ class minas:
                 padre.setCant(nC)
 
             elif padre.getTipo() == "Diamante":
-                if padre.getCant == 0:
+                if padre.getCant() <= 10:
                     self.listaMinas.remove(padre.getId())
-                    self.eliminarCueva(padre.getId())
+                    self.eliminarCueva(padre)
 
                 ext = self.extraerMineral(padre.getCant())
                 print("se extraen: ", ext)
@@ -110,9 +113,9 @@ class minas:
                 padre.setCant(nC)
 
             elif padre.getTipo() == "Piedra":
-                if padre.getCant == 0:
+                if padre.getCant() <= 10:
                     self.listaMinas.remove(padre.getId())
-                    self.eliminarCueva(padre.getId())
+                    self.eliminarCueva(padre)
 
                 ext = self.extraerMineral(padre.getCant())
                 print("se extraen: ", ext)
@@ -122,9 +125,9 @@ class minas:
                 padre.setCant(nC)
 
             elif padre.getTipo() == "Oro":
-                if padre.getCant == 0:
+                if padre.getCant() <= 10:
                     self.listaMinas.remove(padre.getId())
-                    self.eliminarCueva(padre.getId())
+                    self.eliminarCueva(padre)
 
                 ext = self.extraerMineral(padre.getCant())
                 print("se extraen: ", ext)
@@ -134,9 +137,9 @@ class minas:
                 padre.setCant(nC)
 
             elif padre.getTipo() == "Plata":
-                if padre.getCant == 0:
+                if padre.getCant() <= 10:
                     self.listaMinas.remove(padre.getId())
-                    self.eliminarCueva(padre.getId())
+                    self.eliminarCueva(padre)
 
                 ext = self.extraerMineral(padre.getCant())
                 print("se extraen: ", ext)
@@ -146,9 +149,9 @@ class minas:
                 padre.setCant(nC)
 
             elif padre.getTipo() == "Bronce":
-                if padre.getCant == 0:
+                if padre.getCant() <= 10:
                     self.listaMinas.remove(padre.getId())
-                    self.eliminarCueva(padre.getId())
+                    self.eliminarCueva(padre)
 
                 ext = self.extraerMineral(padre.getCant())
                 print("se extraen: ", ext)
@@ -163,21 +166,21 @@ class minas:
         self.iniciarRuta(padre.getDer(), ruta)
 
     def comprobarBodega(self):
-        if self.bodega["cMadera"] >= 100:
+        if self.bodega["cMadera"] % 100 == 0 and self.bodega["cMadera"] != 0:
             self.ingresar(cueva())
-        elif self.bodega["cDiamante"] >= 100:
+        elif self.bodega["cDiamante"] % 100 == 0 and self.bodega["cDiamante"] != 0:
             self.ingresar(cueva())
-        elif self.bodega["cPiedra"] >= 100:
+        elif self.bodega["cPiedra"] % 100 == 0 and self.bodega["cPiedra"] != 0:
             self.ingresar(cueva())
-        elif self.bodega["cOro"] >= 100:
+        elif self.bodega["cOro"] % 100 == 0 and self.bodega["cOro"] != 0:
             self.ingresar(cueva())
-        elif self.bodega["cPlata"] >= 100:
+        elif self.bodega["cPlata"] % 100 == 0 and self.bodega["cPlata"] != 0:
             self.ingresar(cueva())
-        elif self.bodega["cBronce"] >= 100:
+        elif self.bodega["cBronce"] % 100 == 0 and self.bodega["cBronce"] != 0:
             self.ingresar(cueva())
 
     def extraerMineral(self, cant):
-        return 20 * cant / 100
+        return int(20 * cant / 100)
 
     def generarMaterial(self, padre):
         if padre == None:

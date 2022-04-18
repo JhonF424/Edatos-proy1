@@ -20,5 +20,3 @@ while True:
     ruta = M.elegirRuta()
     print("Ruta seleccionada:", ruta)
     M.iniciarRuta(M.getRaiz(), ruta)
-    print()
-    print()
