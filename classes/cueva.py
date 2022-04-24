@@ -1,11 +1,15 @@
 import random
-from classes.minas import *
+
+# from classes.minas import *
+
 
 class cueva:
     def __init__(self):
         tipos = ["Madera", "Diamante", "Piedra", "Oro", "Plata", "Bronce"]
         tipoA = random.choice(tipos)
-        self.tipo = tipoA  # <-- Se genera un mina de cualquiera de los tipos de la lista
+        self.tipo = (
+            tipoA  # <-- Se genera un mina de cualquiera de los tipos de la lista
+        )
         cant = random.randint(100, 300)  # <--
         self.cantidad = cant
         # Usamos la función random para generar datos aleatorios
@@ -14,6 +18,7 @@ class cueva:
         self.id = idI
         self.izq = None
         self.der = None
+        self.padre = None
 
     def getIzq(self):
         return self.izq
@@ -34,7 +39,27 @@ class cueva:
         return self.cantidad
 
     def setCant(self, nCant):
-        self.cantidad = nCant    
-    
+        self.cantidad = nCant
+
     def getId(self):
         return self.id
+
+    def esNodoHoja(self):
+        return not (self.izq or self.der)
+
+    def esNodoRaiz(self):
+        return not self.padre
+
+    def esIzq(self):
+        if self.padre:
+            return self.getIzq() == self.padre.getIzq()
+
+    def esDer(self):
+        if self.padre:
+            return self.getDer() == self.padre.getDer()
+
+    def getPadre(self):
+        return self.padre
+
+    def setPadre(self, Padre):
+        self.padre = Padre

@@ -55,12 +55,48 @@ class minas:
 
         return False
 
-    def eliminarCueva(self, padre):
-        if not padre:
-            return
+    def _EliminarNodo(self, nodo):
+        # caso de nodo es hoja
+        if nodo.esNodoHoja():
+            if nodo.esIzq():
+                nodo.padre.setIzq(None)
+            else:
+                nodo.padre.setDer(None)
+            nodo.setPadre(None)
+        else:
+            # tiene un solo hijo
+            if not (nodo.getDer() and nodo.getIzq()):
+                hijo = None
+                if nodo.getIzq():
+                    hijo = nodo.getIzq()
+                else:
+                    hijo = nodo.getDer()
+                hijo.setPadre(nodo.padre)
+                if nodo.esIzq():
+                    nodo.padre.setIzq(hijo)
+                else:
+                    nodo.padre.setDer(hijo)
+                nodo.setDer(None)
+                nodo.setPadre(None)
+            else:
+                sucesor = self.ObtSucesor(nodo.getDer())
+                if sucesor.getDer():
+                    sucesor.getDer().setPadre(sucesor.padre)
+                    sucesor.padre.setIzq(sucesor.getDer())
+                sucesor.setDer(nodo.getDer())
+                sucesor.setIzq(nodo.getIzq())
+                sucesor.setPadre(nodo.padre)
+                if nodo.esNodoRaiz():
+                    self.raiz = sucesor
+                nodo.setPadre(None)
+                nodo.setIzq(None)
+                nodo.setDer(None)
 
-        if padre.getIzq() == None and padre.getDer() == None:
-            padre == None
+    def ObtSucesor(self, nodo):
+
+        while nodo.getIzq():
+            nodo = nodo.getIzq()
+        return nodo
 
     def listarCuevas(self, padre):
         if not padre:
